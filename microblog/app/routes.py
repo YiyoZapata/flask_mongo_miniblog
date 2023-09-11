@@ -6,7 +6,7 @@ from app.forms import LoginForm, EditProfileForm
 from app.models import User, Post
 from flask_login import current_user, login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash
-from app.forms import RegistrationForm, EditProfileForm
+from app.forms import RegistrationForm, EditProfileForm, EmptyForm
 from bson import ObjectId
 from datetime import datetime
 
@@ -21,7 +21,7 @@ def before_request():
             {
                 '$set': {
                     'last_seen': current_user.last_seen,
-                    
+                    'username': current_user.username,
                     'about_me': current_user.about_me
                 }
             }
@@ -134,29 +134,12 @@ def user(username):
             {'author': user, 'body': 'Test post #1'},
             {'author': user, 'body': 'Test post #2'}
         ]
-        return render_template('user.html', user=user, posts=posts)
+        form = EmptyForm()
+        return render_template('user.html', user=user, posts=posts, form=form)
     else:
         #abort(404)  # Devuelve una respuesta HTTP 404 si el usuario no se encuentra
         flash('Usuario no encontrado')
 
-
-        
-@app.before_request
-def before_request():
-    if current_user.is_authenticated:
-        current_user.last_seen = datetime.utcnow()
-        # Guardar el valor actualizado de last_seen en MongoDB
-        user_collection = mongo.db.users
-        user_collection.update_one(
-            {'_id': ObjectId(current_user._id)},  # Usar el _id del usuario actual
-            {
-                '$set': {
-                    'last_seen': current_user.last_seen,
-                    'username': current_user.username,
-                    'about_me': current_user.about_me
-                }
-            }
-        )
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -198,5 +181,45 @@ def edit_profile():
         form.about_me.data = current_user.about_me
 
     return render_template('edit_profile.html', title='Edit Profile', form=form)
+
+@app.route('/follow/<username>', methods=['POST'])
+@login_required
+def follow(username):
+    form = EmptyForm()
+    if form.validate_on_submit():
+        user_to_follow = User.find_by_username(username)
+        if user_to_follow is None:
+            flash('User {} not found.'.format(username))
+            return redirect(url_for('index'))
+        if user_to_follow == current_user:
+            flash('You cannot follow yourself!')
+            return redirect(url_for('user', username=username))
+        
+        current_user.follow(user_to_follow)
+        current_user.save()  # Guardar los cambios en el usuario actual
+        flash('You are following {}!'.format(username))
+        return redirect(url_for('user', username=username))
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/unfollow/<username>', methods=['POST'])
+@login_required
+def unfollow(username):
+    form = EmptyForm()
+    if form.validate_on_submit():
+        user_to_unfollow = User.find_by_username(username)
+        if user_to_unfollow is None:
+            flash('User {} not found.'.format(username))
+            return redirect(url_for('index'))
+        if user_to_unfollow == current_user:
+            flash('You cannot unfollow yourself!')
+            return redirect(url_for('user', username=username))
+        
+        current_user.unfollow(user_to_unfollow)
+        current_user.save()  # Guardar los cambios en el usuario actual
+        flash('You are not following {}.'.format(username))
+        return redirect(url_for('user', username=username))
+    else:
+        return redirect(url_for('index'))
 
 

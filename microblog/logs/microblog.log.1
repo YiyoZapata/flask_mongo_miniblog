@@ -1,0 +1,100 @@
+2023-09-11 12:12:27,840 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]
+2023-09-11 12:13:11,175 ERROR: Exception on /register [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+Traceback (most recent call last):
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py", line 118, in register
+    new_user.save()
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\models.py", line 27, in save
+    self.id = users_collection.insert_one(self.__dict__).inserted_id
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\collection.py", line 671, in insert_one
+    self._insert_one(
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\collection.py", line 611, in _insert_one
+    self.__database.client._retryable_write(acknowledged, _insert_command, session)
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\mongo_client.py", line 1568, in _retryable_write
+    return self._retry_with_session(retryable, func, s, None)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\mongo_client.py", line 1413, in _retry_with_session
+    return self._retry_internal(retryable, func, session, bulk)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\_csot.py", line 108, in csot_wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\mongo_client.py", line 1460, in _retry_internal
+    return func(session, conn, retryable)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\collection.py", line 609, in _insert_command
+    _check_write_command_response(result)
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\helpers.py", line 259, in _check_write_command_response
+    _raise_last_write_error(write_errors)
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\helpers.py", line 231, in _raise_last_write_error
+    raise DuplicateKeyError(error.get("errmsg"), 11000, error)
+pymongo.errors.DuplicateKeyError: E11000 duplicate key error collection: db.users index: username_1 dup key: { username: "peter" }, full error: {'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: db.users index: username_1 dup key: { username: "peter" }', 'keyPattern': {'username': 1}, 'keyValue': {'username': 'peter'}}
+2023-09-11 12:15:08,219 INFO: Updating user with ID: 64fee836b50854ca47fae697 [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:170]
+2023-09-11 12:15:08,220 INFO: New username: olga [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:171]
+2023-09-11 12:15:08,220 INFO: New about_me: rfrew [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:172]
+2023-09-11 12:15:08,224 INFO: MongoDB update result: 1 [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:191]
+2023-09-11 12:20:53,916 INFO: Updating user with ID: 64fee836b50854ca47fae697 [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:170]
+2023-09-11 12:20:53,916 INFO: New username: olg [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:171]
+2023-09-11 12:20:53,917 INFO: New about_me: rfrew [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:172]
+2023-09-11 12:20:53,919 INFO: MongoDB update result: 1 [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:191]
+2023-09-11 12:20:59,724 INFO: Updating user with ID: 64fee836b50854ca47fae697 [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:170]
+2023-09-11 12:20:59,725 INFO: New username: olga [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:171]
+2023-09-11 12:20:59,725 INFO: New about_me: rfrew [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:172]
+2023-09-11 12:20:59,727 INFO: MongoDB update result: 1 [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:191]
+2023-09-11 12:21:04,011 INFO: Updating user with ID: 64fee836b50854ca47fae697 [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:170]
+2023-09-11 12:21:04,011 INFO: New username: olga [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:171]
+2023-09-11 12:21:04,012 INFO: New about_me: rfrew [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:172]
+2023-09-11 12:21:04,014 INFO: MongoDB update result: 0 [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:191]
+2023-09-11 12:24:11,799 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]
+2023-09-11 14:26:57,659 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]
+2023-09-11 14:27:19,653 ERROR: Exception on /user/yiyo [GET] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+Traceback (most recent call last):
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py", line 138, in user
+    return render_template('user.html', user=user, posts=posts, form=form)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\templating.py", line 151, in render_template
+    return _render(app, template, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\templating.py", line 132, in _render
+    rv = template.render(context)
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\jinja2\environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\user.html", line 1, in top-level template code
+    {% extends "base.html" %}
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\base.html", line 31, in top-level template code
+    {% block content %}{% endblock %}
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\user.html", line 11, in block 'content'
+    <p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following.</p>
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: list.count() takes exactly one argument (0 given)

@@ -6,6 +6,10 @@ from flask_login import UserMixin
 import json
 from bson import ObjectId
 from hashlib import md5
+from pymongo import MongoClient
+
+users_collection = mongo.db.users
+posts_collection = mongo.db.posts
 
 class User(UserMixin):
     def __init__(self,user_data):
@@ -14,7 +18,9 @@ class User(UserMixin):
         self.email = user_data['email']
         self.password_hash = user_data['password_hash']
         self.about_me = user_data.get('about_me','')  # Obtener el campo 'about_me' o establecerlo en una cadena vacía por defecto
-        self.last_seen = user_data.get('last_seen') 
+        self.last_seen = user_data.get('last_seen')
+        self.followers = user_data.get("followers", [])
+        self.following = user_data.get("following", []) 
 
     def get_id(self):
         return self._id
@@ -54,6 +60,45 @@ class User(UserMixin):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
+    
+    def follow(self, user_to_follow_id):
+        if user_to_follow_id not in self.following:
+            self.following.append(user_to_follow_id)
+            user_to_follow = users_collection.find_one({"_id": user_to_follow_id})
+            if user_to_follow:
+                user_to_follow_followers = user_to_follow.get("followers", [])
+                user_to_follow_followers.append(self._id)
+                users_collection.update_one(
+                    {"_id": user_to_follow_id},
+                    {"$set": {"followers": user_to_follow_followers}}
+                )
+
+    def unfollow(self, user_to_unfollow_id):
+        if user_to_unfollow_id in self.following:
+            self.following.remove(user_to_unfollow_id)
+            user_to_unfollow = users_collection.find_one({"_id": user_to_unfollow_id})
+            if user_to_unfollow:
+                user_to_unfollow_followers = user_to_unfollow.get("followers", [])
+                user_to_unfollow_followers.remove(self._id)
+                users_collection.update_one(
+                    {"_id": user_to_unfollow_id},
+                    {"$set": {"followers": user_to_unfollow_followers}}
+                )
+
+    def followed_posts(self):
+        # Obtener la lista de IDs de usuarios seguidos
+        followed_ids = self.following
+        
+        # Agregar también el ID del propio usuario
+        followed_ids.append(self._id)
+        
+        # Consultar las publicaciones de los usuarios seguidos
+        followed_posts = posts_collection.find({"user_id": {"$in": followed_ids}})
+        
+        # Ordenar las publicaciones por fecha descendente
+        followed_posts = followed_posts.sort("timestamp", -1)
+        
+        return followed_posts
 
 
 
