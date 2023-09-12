@@ -6,9 +6,11 @@ from app.forms import LoginForm, EditProfileForm
 from app.models import User, Post
 from flask_login import current_user, login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash
-from app.forms import RegistrationForm, EditProfileForm, EmptyForm
+from app.forms import RegistrationForm, EditProfileForm, EmptyForm, PostForm
 from bson import ObjectId
 from datetime import datetime
+from pymongo import MongoClient
+
 
 @app.before_request
 def before_request():
@@ -28,21 +30,75 @@ def before_request():
         )
 
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    posts = [
+    form = PostForm()
+    if form.validate_on_submit():
+        # Crea un nuevo documento de publicación en MongoDB
+        post_data = {
+            'body': form.post.data,
+            'author_id': current_user._id,  # Usa el ID del autor
+            'timestamp': datetime.utcnow()  # Agrega la fecha y hora actual
+        }
+        posts_collection = mongo.db.posts
+        posts_collection.insert_one(post_data)
+        flash('Your post is now live!')
+        return redirect(url_for('index'))
+    
+    page = request.args.get('page', 1, type=int)
+    
+    # Realiza una agregación para unir la información del usuario y la publicación
+    pipeline = [
         {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
+            "$lookup": {
+                "from": "users",
+                "localField": "author_id",
+                "foreignField": "_id",
+                "as": "user"
+            }
         },
         {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
+            "$unwind": "$user"
+        },
+        {
+            "$sort": {"timestamp": -1}
+        },
+        {
+            "$skip": (page - 1) * app.config['POSTS_PER_PAGE']
+        },
+        {
+            "$limit": app.config['POSTS_PER_PAGE']
         }
     ]
-    return render_template('index.html', title='Home', user=user, posts=posts)
+    
+    posts_collection = mongo.db.posts
+    posts = list(posts_collection.aggregate(pipeline))
+    
+    next_url = url_for('index', page=page + 1) if len(posts) == app.config['POSTS_PER_PAGE'] else None
+    prev_url = url_for('index', page=page - 1) if page > 1 else None
+    
+    return render_template('index.html', title='Home', form=form,
+                           posts=posts, next_url=next_url,
+                           prev_url=prev_url, user=current_user)
+
+                                                                                                          
+
+@app.route('/explore')
+@login_required
+def explore():
+    page = request.args.get('page', 1, type=int)
+    posts_collection = mongo.db.posts
+    posts = posts_collection.find().sort('timestamp', -1).skip((page - 1) * app.config['POSTS_PER_PAGE']).limit(app.config['POSTS_PER_PAGE'])
+    
+    # Contar el número total de documentos en la colección
+    total_posts = posts_collection.count_documents({})
+    
+    next_url = url_for('explore', page=page + 1) if total_posts > page * app.config['POSTS_PER_PAGE'] else None
+    prev_url = url_for('explore', page=page - 1) if page > 1 else None
+    
+    return render_template('index.html', title='Explore', posts=posts, next_url=next_url, prev_url=prev_url, user=current_user)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -125,20 +181,29 @@ def register():
 @app.route('/user/<username>')
 @login_required
 def user(username):
-    # Buscar al usuario en la colección de usuarios en MongoDB por su nombre de usuario
-    user_data = mongo.db.users.find_one({'username': username})
+    user = User.find_by_username(username)
+    if not user:
+        flash('User {} not found.'.format(username))
+        return redirect(url_for('index'))
     
-    if user_data:
-        user = User(user_data)
-        posts = [
-            {'author': user, 'body': 'Test post #1'},
-            {'author': user, 'body': 'Test post #2'}
-        ]
-        form = EmptyForm()
-        return render_template('user.html', user=user, posts=posts, form=form)
-    else:
-        #abort(404)  # Devuelve una respuesta HTTP 404 si el usuario no se encuentra
-        flash('Usuario no encontrado')
+    page = request.args.get('page', 1, type=int)
+    
+    # Consultar las publicaciones del usuario y ordenarlas por fecha descendente
+    user_posts_cursor = mongo.db.posts.find({'user_id': ObjectId(user._id)}).sort('timestamp', -1)
+    
+    # Contar el número total de publicaciones del usuario
+    total_posts = mongo.db.posts.count_documents({'user_id': ObjectId(user._id)})
+    
+    # Paginar las publicaciones
+    posts = user_posts_cursor.skip((page - 1) * app.config['POSTS_PER_PAGE']).limit(app.config['POSTS_PER_PAGE'])
+    
+    next_url = url_for('user', username=username, page=page + 1) if total_posts > page * app.config['POSTS_PER_PAGE'] else None
+    prev_url = url_for('user', username=username, page=page - 1) if page > 1 else None
+    
+    form = EmptyForm()
+    
+    return render_template('user.html', user=user, posts=posts,
+                           next_url=next_url, prev_url=prev_url, form=form)
 
 
 @app.route('/edit_profile', methods=['GET', 'POST'])

@@ -127,9 +127,28 @@ class Post:
         self.id = result.inserted_id
 
     @staticmethod
-    def find_all():
+    def find_all_with_user_info():
         posts_collection = mongo.db.posts
-        return posts_collection.find()
+        users_collection = mongo.db.users
+        
+        # Realiza una agregación para unir la información del usuario y la publicación
+        pipeline = [
+            {
+                "$lookup": {
+                    "from": "users",
+                    "localField": "user_id",
+                    "foreignField": "_id",
+                    "as": "user"
+                }
+            },
+            {
+                "$unwind": "$user"
+            }
+        ]
+        
+        posts = posts_collection.aggregate(pipeline)
+        
+        return posts
 
     @staticmethod
     def find_by_user_id(user_id):

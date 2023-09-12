@@ -1,4 +1,5 @@
-2023-09-11 14:29:17,480 ERROR: Exception on /user/yiyo [GET] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+2023-09-12 09:20:32,856 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]
+2023-09-12 09:20:38,783 ERROR: Exception on /explore [GET] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
 Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
     response = self.full_dispatch_request()
@@ -15,9 +16,9 @@ Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py", line 138, in user
-    return render_template('user.html', user=user, posts=posts, form=form)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py", line 101, in explore
+    return render_template('index.html', title='Explore', posts=posts, next_url=next_url, prev_url=prev_url)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\templating.py", line 151, in render_template
     return _render(app, template, context)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -28,61 +29,18 @@ Traceback (most recent call last):
     self.environment.handle_exception()
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
     raise rewrite_traceback_stack(source=source)
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\user.html", line 1, in top-level template code
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\index.html", line 1, in top-level template code
     {% extends "base.html" %}
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\base.html", line 31, in top-level template code
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\base.html", line 32, in top-level template code
     {% block content %}{% endblock %}
     ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\user.html", line 11, in block 'content'
-    <p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following.</p>
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\index.html", line 20, in block 'content'
+    {% include '_post.html' %}
     ^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: list.count() takes exactly one argument (0 given)
-2023-09-11 14:30:23,387 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]
-2023-09-11 14:30:25,646 ERROR: Exception on /user/yiyo [GET] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
-Traceback (most recent call last):
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
-    return current_app.ensure_sync(func)(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py", line 138, in user
-    return render_template('user.html', user=user, posts=posts, form=form)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\templating.py", line 151, in render_template
-    return _render(app, template, context)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\templating.py", line 132, in _render
-    rv = template.render(context)
-         ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\jinja2\environment.py", line 1301, in render
-    self.environment.handle_exception()
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\user.html", line 1, in top-level template code
-    {% extends "base.html" %}
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\base.html", line 31, in top-level template code
-    {% block content %}{% endblock %}
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\_post.html", line 3, in top-level template code
+    <td><img src="{{ user.avatar(36) }}"></td>
     ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\user.html", line 11, in block 'content'
-    <p>{{ user.followers.count() }} followers, {{ user.following.count() }} following.</p>
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: list.count() takes exactly one argument (0 given)
-2023-09-11 14:36:42,717 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]
-2023-09-11 14:40:20,600 INFO: Updating user with ID: 64ff0a95f2bb92d1c1779bb6 [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:153]
-2023-09-11 14:40:20,601 INFO: New username: Yiyo Zapata [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:154]
-2023-09-11 14:40:20,601 INFO: New about_me: cambios [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:155]
-2023-09-11 14:40:20,603 INFO: MongoDB update result: 1 [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:174]
-2023-09-11 14:40:46,225 INFO: Updating user with ID: 64ff0a95f2bb92d1c1779bb6 [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:153]
-2023-09-11 14:40:46,225 INFO: New username: Yiyo [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:154]
-2023-09-11 14:40:46,226 INFO: New about_me: cambios va bien [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:155]
-2023-09-11 14:40:46,227 INFO: MongoDB update result: 1 [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py:174]
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\jinja2\environment.py", line 485, in getattr
+    return getattr(obj, attribute)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'user' is undefined
