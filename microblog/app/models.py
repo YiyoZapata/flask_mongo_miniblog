@@ -8,7 +8,7 @@ from bson import ObjectId
 from hashlib import md5
 from pymongo import MongoClient
 
-users_collection = mongo.db.users
+
 posts_collection = mongo.db.posts
 
 class User(UserMixin):
@@ -32,7 +32,27 @@ class User(UserMixin):
             raise ValueError("La contraseña debe ser establecida antes de guardar el usuario.")
         self.id = users_collection.insert_one(self.__dict__).inserted_id
         print("Usuario guardado con ID:", self.id)
-  
+
+       
+    
+    def update(self, update_values):
+        users_collection = mongo.db.users
+        
+        result = users_collection.update_one({"_id": self._id},{'$set': update_values})
+        print("Update Result:", result.modified_count)
+    
+    def update_opt(self):
+        users_collection = mongo.db.users
+        
+        result = users_collection.update_one({"_id": self._id},{'$set': self.__dict__})
+        print("Update Result:", result.modified_count)
+        
+    
+    def is_following(self, user_id):
+            return str(user_id) in self.following 
+    
+
+
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -61,29 +81,16 @@ class User(UserMixin):
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
     
-    def follow(self, user_to_follow_id):
-        if user_to_follow_id not in self.following:
-            self.following.append(user_to_follow_id)
-            user_to_follow = users_collection.find_one({"_id": user_to_follow_id})
-            if user_to_follow:
-                user_to_follow_followers = user_to_follow.get("followers", [])
-                user_to_follow_followers.append(self._id)
-                users_collection.update_one(
-                    {"_id": user_to_follow_id},
-                    {"$set": {"followers": user_to_follow_followers}}
-                )
+    def follow(self, user_to_follow):
+        if user_to_follow._id != self._id and user_to_follow._id not in self.following:
+            self.following.append(user_to_follow._id)
+            self.update({"following": self.following})  # Actualiza el campo 'following' del usuario actual
 
-    def unfollow(self, user_to_unfollow_id):
-        if user_to_unfollow_id in self.following:
-            self.following.remove(user_to_unfollow_id)
-            user_to_unfollow = users_collection.find_one({"_id": user_to_unfollow_id})
-            if user_to_unfollow:
-                user_to_unfollow_followers = user_to_unfollow.get("followers", [])
-                user_to_unfollow_followers.remove(self._id)
-                users_collection.update_one(
-                    {"_id": user_to_unfollow_id},
-                    {"$set": {"followers": user_to_unfollow_followers}}
-                )
+    def unfollow(self, user_to_unfollow):
+        if user_to_unfollow._id != self._id and user_to_unfollow._id in self.following:
+            self.following.remove(user_to_unfollow._id)
+            self.update({"following": self.following})  # Actualiza el campo 'following' del usuario actual
+             
 
     def followed_posts(self):
         # Obtener la lista de IDs de usuarios seguidos
@@ -99,7 +106,6 @@ class User(UserMixin):
         followed_posts = followed_posts.sort("timestamp", -1)
         
         return followed_posts
-
 
 
 @login.user_loader

@@ -261,11 +261,14 @@ def follow(username):
             return redirect(url_for('user', username=username))
         
         current_user.follow(user_to_follow)
-        current_user.save()  # Guardar los cambios en el usuario actual
+        if not user_to_follow.is_following(current_user._id):
+            user_to_follow.followers.append(current_user._id)  # Agrega el seguidor al usuario que está siendo seguido
+        user_to_follow.update_opt()  # Guardar los cambios en el usuario que está siendo seguido
         flash('You are following {}!'.format(username))
         return redirect(url_for('user', username=username))
     else:
         return redirect(url_for('index'))
+
 
 @app.route('/unfollow/<username>', methods=['POST'])
 @login_required
@@ -281,10 +284,12 @@ def unfollow(username):
             return redirect(url_for('user', username=username))
         
         current_user.unfollow(user_to_unfollow)
-        current_user.save()  # Guardar los cambios en el usuario actual
+        user_to_unfollow.followers.remove(current_user._id)  # Elimina el seguidor del usuario que está siendo dejado de seguir
+        user_to_unfollow.update_opt()  # Guardar los cambios en el usuario que está siendo dejado de seguir
         flash('You are not following {}.'.format(username))
         return redirect(url_for('user', username=username))
     else:
         return redirect(url_for('index'))
+
 
 
