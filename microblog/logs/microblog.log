@@ -113,3 +113,4 @@ Traceback (most recent call last):
                                       ^^^^^^^
 AttributeError: 'User' object has no attribute 'id'
 2023-09-12 14:22:45,828 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]
+2023-09-14 10:32:33,060 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]
