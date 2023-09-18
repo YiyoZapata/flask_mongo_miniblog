@@ -6,13 +6,13 @@ from app.forms import LoginForm, RegistrationForm, EditProfileForm, \
     EmptyForm, PostForm, ResetPasswordRequestForm, ResetPasswordForm
 from app.models import User, Post
 from flask_login import current_user, login_user, login_required, logout_user
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash 
 from app.forms import RegistrationForm, EditProfileForm, EmptyForm, PostForm
 from bson import ObjectId
 from datetime import datetime
 from pymongo import MongoClient
 from app.email import send_password_reset_email
-
+from flask_babel import _, get_locale
 
 @app.before_request
 def before_request():
@@ -30,6 +30,7 @@ def before_request():
                 }
             }
         )
+    g.locale = str(get_locale())
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -46,7 +47,7 @@ def index():
         }
         posts_collection = mongo.db.posts
         posts_collection.insert_one(post_data)
-        flash('Your post is now live!')
+        flash(_('Your post is now live!'))
         return redirect(url_for('index'))
     
     page = request.args.get('page', 1, type=int)
@@ -81,7 +82,7 @@ def index():
     next_url = url_for('index', page=page + 1) if len(posts) == app.config['POSTS_PER_PAGE'] else None
     prev_url = url_for('index', page=page - 1) if page > 1 else None
     
-    return render_template('index.html', title='Home', form=form,
+    return render_template('index.html', title=_('Home'), form=form,
                            posts=posts, next_url=next_url,
                            prev_url=prev_url, user=current_user)
 
@@ -124,7 +125,7 @@ def explore():
     next_url = url_for('explore', page=page + 1) if total_posts > page * app.config['POSTS_PER_PAGE'] else None
     prev_url = url_for('explore', page=page - 1) if page > 1 else None
     
-    return render_template('index.html', title='Explore', posts=posts, next_url=next_url, prev_url=prev_url, user=current_user)
+    return render_template('index.html', title=_('Explore'), posts=posts, next_url=next_url, prev_url=prev_url, user=current_user)
 
 
 
@@ -152,10 +153,10 @@ def login():
 
             return redirect(next_page)
 
-        flash('Invalid username or password')
+        flash(_('Invalid username or password'))
         return redirect(url_for('login'))
 
-    return render_template('login.html', title='Sign In', form=form)
+    return render_template('login.html', title=_('Sign In'), form=form)
 
 
 
@@ -177,12 +178,12 @@ def register():
         # Verificar si ya existe un usuario con el mismo nombre de usuario o correo electrónico
         existing_user = User.find_by_username(form.username.data)
         if existing_user:
-            flash('Username already exists. Please choose a different one.')
+            flash(_('Username already exists. Please choose a different one.'))
             return redirect(url_for('register'))
         
         existing_email = User.find_by_email(form.email.data)
         if existing_email:
-            flash('Email address already in use. Please use a different one.')
+            flash(_('Email address already in use. Please use a different one.'))
             return redirect(url_for('register'))
         
         # Crear un nuevo usuario
@@ -200,10 +201,10 @@ def register():
         new_user.set_password(form.password.data)
         new_user.save()
 
-        flash('Congratulations, you are now a registered user!')
+        flash(_('Congratulations, you are now a registered user!'))
         return redirect(url_for('login'))
 
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', title=_('Register'), form=form)
 
 @app.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
@@ -214,10 +215,10 @@ def reset_password_request():
         user_data = mongo.db.users.find_one({'email': form.email.data})
         if user_data:
             send_password_reset_email(User(user_data))
-        flash('Check your email for the instructions to reset your password')
+        flash(_('Check your email for the instructions to reset your password'))
         return redirect(url_for('login'))
     return render_template('reset_password_request.html',
-                           title='Reset Password', form=form)
+                           title=_('Reset Password'), form=form)
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
@@ -231,21 +232,17 @@ def reset_password(token):
         user = User(user_data)
         user.set_password(form.password.data)
         user.save()
-        flash('Your password has been reset.')
+        flash(_('Your password has been reset.'))
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
 
-from flask import render_template, flash, redirect, url_for, request
-from flask_login import current_user, login_required
-from app import app, mongo
-from app.models import User
 
 @app.route('/user/<username>')
 @login_required
 def user(username):
     target_user = User.find_by_username(username)
     if not target_user:
-        flash('User {} not found.'.format(username))
+        flash(_('User {} not found.'.format(username)))
         return redirect(url_for('index'))
     
     page = request.args.get('page', 1, type=int)
@@ -303,14 +300,14 @@ def edit_profile():
 
         app.logger.info(f'MongoDB update result: {result.modified_count}')
         print(result.modified_count)
-        flash('Your changes have been saved.')
+        flash(_('Your changes have been saved.'))
         
         return redirect(url_for('edit_profile'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
 
-    return render_template('edit_profile.html', title='Edit Profile', form=form)
+    return render_template('edit_profile.html', title=_('Edit Profile'), form=form)
 
 @app.route('/follow/<username>', methods=['POST'])
 @login_required
@@ -319,17 +316,17 @@ def follow(username):
     if form.validate_on_submit():
         user_to_follow = User.find_by_username(username)
         if user_to_follow is None:
-            flash('User {} not found.'.format(username))
+            flash(_('User {} not found.'.format(username)))
             return redirect(url_for('index'))
         if user_to_follow == current_user:
-            flash('You cannot follow yourself!')
+            flash(_('You cannot follow yourself!'))
             return redirect(url_for('user', username=username))
         
         current_user.follow(user_to_follow)
         if not user_to_follow.is_following(current_user._id):
             user_to_follow.followers.append(current_user._id)  # Agrega el seguidor al usuario que está siendo seguido
         user_to_follow.update_opt()  # Guardar los cambios en el usuario que está siendo seguido
-        flash('You are following {}!'.format(username))
+        flash(_('You are following {}!'.format(username)))
         return redirect(url_for('user', username=username))
     else:
         return redirect(url_for('index'))
@@ -342,16 +339,16 @@ def unfollow(username):
     if form.validate_on_submit():
         user_to_unfollow = User.find_by_username(username)
         if user_to_unfollow is None:
-            flash('User {} not found.'.format(username))
+            flash(_('User {} not found.'.format(username)))
             return redirect(url_for('index'))
         if user_to_unfollow == current_user:
-            flash('You cannot unfollow yourself!')
+            flash(_('You cannot unfollow yourself!'))
             return redirect(url_for('user', username=username))
         
         current_user.unfollow(user_to_unfollow)
         user_to_unfollow.followers.remove(current_user._id)  # Elimina el seguidor del usuario que está siendo dejado de seguir
         user_to_unfollow.update_opt()  # Guardar los cambios en el usuario que está siendo dejado de seguir
-        flash('You are not following {}.'.format(username))
+        flash(_('You are not following {}.'.format(username)))
         return redirect(url_for('user', username=username))
     else:
         return redirect(url_for('index'))
