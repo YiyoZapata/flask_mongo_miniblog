@@ -235,21 +235,27 @@ def reset_password(token):
         return redirect(url_for('login'))
     return render_template('reset_password.html', form=form)
 
+from flask import render_template, flash, redirect, url_for, request
+from flask_login import current_user, login_required
+from app import app, mongo
+from app.models import User
+
 @app.route('/user/<username>')
 @login_required
 def user(username):
-    user = User.find_by_username(username)
-    if not user:
+    target_user = User.find_by_username(username)
+    if not target_user:
         flash('User {} not found.'.format(username))
         return redirect(url_for('index'))
     
     page = request.args.get('page', 1, type=int)
     
     # Consultar las publicaciones del usuario y ordenarlas por fecha descendente
-    user_posts_cursor = mongo.db.posts.find({'user_id': ObjectId(user._id)}).sort('timestamp', -1)
+    user_posts_cursor = mongo.db.posts.find({'user_id': ObjectId(target_user._id)}).sort('timestamp', -1)
+
     
     # Contar el número total de publicaciones del usuario
-    total_posts = mongo.db.posts.count_documents({'user_id': ObjectId(user._id)})
+    total_posts = mongo.db.posts.count_documents({'user_id':ObjectId(target_user._id)})
     
     # Paginar las publicaciones
     posts = user_posts_cursor.skip((page - 1) * app.config['POSTS_PER_PAGE']).limit(app.config['POSTS_PER_PAGE'])
@@ -259,8 +265,10 @@ def user(username):
     
     form = EmptyForm()
     
-    return render_template('user.html', user=user, posts=posts,
+    return render_template('user.html', target_user=target_user, posts=posts,
                            next_url=next_url, prev_url=prev_url, form=form)
+
+
 
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
