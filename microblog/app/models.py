@@ -1,12 +1,15 @@
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-from app import mongo
+from app import mongo, app
 from app import login 
 from flask_login import UserMixin
 import json
 from bson import ObjectId
 from hashlib import md5
-from pymongo import MongoClient
+from pymongo import MongoClient 
+from werkzeug.security import generate_password_hash, check_password_hash
+import jwt 
+from time import time
 
 
 posts_collection = mongo.db.posts
@@ -106,6 +109,28 @@ class User(UserMixin):
         followed_posts = followed_posts.sort("timestamp", -1)
         
         return followed_posts
+    
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password': str(self._id), 'exp': time() + expires_in},
+            app.config['SECRET_KEY'], algorithm='HS256')
+
+
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            payload = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+            user_id = payload.get('reset_password')
+            if user_id:
+                user_data = mongo.db.users.find_one({'_id': ObjectId(user_id)})
+                if user_data:
+                    return User(user_data)
+        except jwt.ExpiredSignatureError:
+            pass  # Token expirado
+        except (jwt.DecodeError, jwt.InvalidTokenError):
+            pass  # Token inválido
+        return None
 
 
 @login.user_loader

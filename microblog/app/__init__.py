@@ -5,10 +5,12 @@ from flask_login import LoginManager
 import logging
 from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
+from flask_mail import Mail
 
 
 app = Flask(__name__)
 app.config.from_object(Config)
+mail = Mail(app)
 
 mongo = MongoClient(app.config['MONGO_URI'])
 login = LoginManager(app)
