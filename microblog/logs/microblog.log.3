@@ -1,4 +1,4 @@
-2023-09-12 13:27:27,626 ERROR: Exception on /follow/yiyo [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+2023-09-12 13:33:28,565 ERROR: Exception on /follow/yiyo [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
 Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
     response = self.full_dispatch_request()
@@ -44,7 +44,7 @@ Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\helpers.py", line 231, in _raise_last_write_error
     raise DuplicateKeyError(error.get("errmsg"), 11000, error)
 pymongo.errors.DuplicateKeyError: E11000 duplicate key error collection: db.users index: _id_ dup key: { _id: "6500304debf35759c3368764" }, full error: {'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: db.users index: _id_ dup key: { _id: "6500304debf35759c3368764" }', 'keyPattern': {'_id': 1}, 'keyValue': {'_id': '6500304debf35759c3368764'}}
-2023-09-12 13:27:54,971 ERROR: Exception on /follow/susan [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+2023-09-12 13:33:32,840 ERROR: Exception on /follow/yiyo [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
 Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
     response = self.full_dispatch_request()
@@ -90,3 +90,4 @@ Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\helpers.py", line 231, in _raise_last_write_error
     raise DuplicateKeyError(error.get("errmsg"), 11000, error)
 pymongo.errors.DuplicateKeyError: E11000 duplicate key error collection: db.users index: _id_ dup key: { _id: "6500304debf35759c3368764" }, full error: {'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: db.users index: _id_ dup key: { _id: "6500304debf35759c3368764" }', 'keyPattern': {'_id': 1}, 'keyValue': {'_id': '6500304debf35759c3368764'}}
+2023-09-12 14:16:24,332 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]

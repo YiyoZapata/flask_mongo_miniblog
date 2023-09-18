@@ -1,4 +1,4 @@
-2023-09-12 12:42:57,390 ERROR: Exception on /follow/yiyo [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+2023-09-12 12:46:56,991 ERROR: Exception on /follow/susan [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
 Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
     response = self.full_dispatch_request()
@@ -15,9 +15,11 @@ Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py", line 264, in follow
-    current_user.save()  # Guardar los cambios en el usuario actual
-    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py", line 263, in follow
+    current_user.follow(user_to_follow)
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\models.py", line 89, in follow
+    self.save()  # Guarda el usuario actual
+    ^^^^^^^^^^^
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\models.py", line 40, in save
     users_collection.insert_one(user_data)
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\collection.py", line 671, in insert_one
@@ -43,7 +45,8 @@ Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\helpers.py", line 231, in _raise_last_write_error
     raise DuplicateKeyError(error.get("errmsg"), 11000, error)
 pymongo.errors.DuplicateKeyError: E11000 duplicate key error collection: db.users index: username_1 dup key: { username: "rodri" }, full error: {'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: db.users index: username_1 dup key: { username: "rodri" }', 'keyPattern': {'username': 1}, 'keyValue': {'username': 'rodri'}}
-2023-09-12 12:43:12,594 ERROR: Exception on /follow/yiyo [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+2023-09-12 12:49:07,319 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]
+2023-09-12 12:49:12,476 ERROR: Exception on /follow/susan [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
 Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
     response = self.full_dispatch_request()
@@ -60,9 +63,11 @@ Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py", line 264, in follow
-    current_user.save()  # Guardar los cambios en el usuario actual
-    ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py", line 263, in follow
+    current_user.follow(user_to_follow)
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\models.py", line 89, in follow
+    self.save()  # Guarda el usuario actual
+    ^^^^^^^^^^^
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\models.py", line 40, in save
     users_collection.insert_one(user_data)
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\collection.py", line 671, in insert_one
@@ -88,3 +93,29 @@ Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\helpers.py", line 231, in _raise_last_write_error
     raise DuplicateKeyError(error.get("errmsg"), 11000, error)
 pymongo.errors.DuplicateKeyError: E11000 duplicate key error collection: db.users index: username_1 dup key: { username: "rodri" }, full error: {'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: db.users index: username_1 dup key: { username: "rodri" }', 'keyPattern': {'username': 1}, 'keyValue': {'username': 'rodri'}}
+2023-09-12 12:51:29,198 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]
+2023-09-12 12:51:33,677 ERROR: Exception on /follow/susan [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+Traceback (most recent call last):
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py", line 263, in follow
+    current_user.follow(user_to_follow)
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\models.py", line 95, in follow
+    self.save()  # Guarda el usuario actual
+    ^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\models.py", line 34, in save
+    raise ValueError("El nombre de usuario ya está en uso.")
+ValueError: El nombre de usuario ya está en uso.

@@ -90,15 +90,40 @@ def index():
 def explore():
     page = request.args.get('page', 1, type=int)
     posts_collection = mongo.db.posts
-    posts = posts_collection.find().sort('timestamp', -1).skip((page - 1) * app.config['POSTS_PER_PAGE']).limit(app.config['POSTS_PER_PAGE'])
     
-    # Contar el número total de documentos en la colección
+    # Realiza una agregación para unir la información del usuario y la publicación
+    pipeline = [
+        {
+            "$lookup": {
+                "from": "users",
+                "localField": "author_id",
+                "foreignField": "_id",
+                "as": "user"
+            }
+        },
+        {
+            "$unwind": "$user"
+        },
+        {
+            "$sort": {"timestamp": -1}
+        },
+        {
+            "$skip": (page - 1) * app.config['POSTS_PER_PAGE']
+        },
+        {
+            "$limit": app.config['POSTS_PER_PAGE']
+        }
+    ]
+    
+    posts = list(posts_collection.aggregate(pipeline))
+    
     total_posts = posts_collection.count_documents({})
     
     next_url = url_for('explore', page=page + 1) if total_posts > page * app.config['POSTS_PER_PAGE'] else None
     prev_url = url_for('explore', page=page - 1) if page > 1 else None
     
     return render_template('index.html', title='Explore', posts=posts, next_url=next_url, prev_url=prev_url, user=current_user)
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
