@@ -1,4 +1,4 @@
-2023-09-18 08:23:26,337 ERROR: Exception on /explore [GET] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+2023-09-21 14:29:11,939 ERROR: Exception on /unfollow/susan [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
 Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
     response = self.full_dispatch_request()
@@ -15,35 +15,11 @@ Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py", line 101, in explore
-    return render_template('index.html', title='Explore', posts=posts, next_url=next_url, prev_url=prev_url, user=current_user)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\templating.py", line 151, in render_template
-    return _render(app, template, context)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\templating.py", line 132, in _render
-    rv = template.render(context)
-         ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\jinja2\environment.py", line 1301, in render
-    self.environment.handle_exception()
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\index.html", line 1, in top-level template code
-    {% extends "base.html" %}
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\base.html", line 32, in top-level template code
-    {% block content %}{% endblock %}
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\index.html", line 20, in block 'content'
-    {% include '_post.html' %}
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\_post.html", line 4, in top-level template code
-    <td><a href="{{ url_for('user', username=user.username) }}">{{ post.user.username  }}</a> says:<br>{{ post.body }}</td>
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\jinja2\environment.py", line 485, in getattr
-    return getattr(obj, attribute)
-           ^^^^^^^^^^^^^^^^^^^^^^^
-jinja2.exceptions.UndefinedError: 'dict object' has no attribute 'user'
-2023-09-18 08:23:26,338 ERROR: Exception on /explore [GET] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\main\routes.py", line 255, in unfollow
+    user_to_unfollow.followers.remove(current_user._id)  # Elimina el seguidor del usuario que está siendo dejado de seguir
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: list.remove(x): x not in list
+2023-09-21 14:30:40,474 ERROR: Exception on /unfollow/susan [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
 Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
     response = self.full_dispatch_request()
@@ -60,31 +36,72 @@ Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py", line 101, in explore
-    return render_template('index.html', title='Explore', posts=posts, next_url=next_url, prev_url=prev_url, user=current_user)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\templating.py", line 151, in render_template
-    return _render(app, template, context)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\templating.py", line 132, in _render
-    rv = template.render(context)
-         ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\jinja2\environment.py", line 1301, in render
-    self.environment.handle_exception()
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\jinja2\environment.py", line 936, in handle_exception
-    raise rewrite_traceback_stack(source=source)
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\index.html", line 1, in top-level template code
-    {% extends "base.html" %}
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\base.html", line 32, in top-level template code
-    {% block content %}{% endblock %}
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\index.html", line 20, in block 'content'
-    {% include '_post.html' %}
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\templates\_post.html", line 4, in top-level template code
-    <td><a href="{{ url_for('user', username=user.username) }}">{{ post.user.username  }}</a> says:<br>{{ post.body }}</td>
-    ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\jinja2\environment.py", line 485, in getattr
-    return getattr(obj, attribute)
-           ^^^^^^^^^^^^^^^^^^^^^^^
-jinja2.exceptions.UndefinedError: 'dict object' has no attribute 'user'
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\main\routes.py", line 255, in unfollow
+    user_to_unfollow.followers.remove(current_user._id)  # Elimina el seguidor del usuario que está siendo dejado de seguir
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: list.remove(x): x not in list
+2023-09-21 14:32:34,474 ERROR: Exception on /unfollow/susan [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+Traceback (most recent call last):
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\main\routes.py", line 255, in unfollow
+    user_to_unfollow.followers.remove(current_user._id)  # Elimina el seguidor del usuario que está siendo dejado de seguir
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: list.remove(x): x not in list
+2023-09-21 14:33:41,440 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:80]
+2023-09-21 14:35:39,608 ERROR: Exception on /unfollow/susan [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+Traceback (most recent call last):
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\main\routes.py", line 255, in unfollow
+    user_to_unfollow.followers.remove(current_user.get_id())  # Elimina el seguidor del usuario que está siendo dejado de seguir
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: list.remove(x): x not in list
+2023-09-21 14:35:43,001 ERROR: Exception on /unfollow/susan [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+Traceback (most recent call last):
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
+    return current_app.ensure_sync(func)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\main\routes.py", line 255, in unfollow
+    user_to_unfollow.followers.remove(current_user.get_id())  # Elimina el seguidor del usuario que está siendo dejado de seguir
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: list.remove(x): x not in list
+2023-09-21 14:36:34,361 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:80]

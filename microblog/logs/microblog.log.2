@@ -1,47 +1,107 @@
-2023-09-12 14:16:45,997 ERROR: Exception on /register [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+2023-09-19 16:04:28,883 ERROR: Exception on /index [GET] [in C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask\app.py:1414]
 Traceback (most recent call last):
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
     response = self.full_dispatch_request()
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
     rv = self.handle_user_exception(e)
          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py", line 174, in register
-    new_user.save()
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\models.py", line 33, in save
-    self.id = users_collection.insert_one(self.__dict__).inserted_id
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\collection.py", line 671, in insert_one
-    self._insert_one(
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\collection.py", line 611, in _insert_one
-    self.__database.client._retryable_write(acknowledged, _insert_command, session)
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\mongo_client.py", line 1568, in _retryable_write
-    return self._retry_with_session(retryable, func, s, None)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\mongo_client.py", line 1413, in _retry_with_session
-    return self._retry_internal(retryable, func, session, bulk)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\_csot.py", line 108, in csot_wrapper
-    return func(self, *args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\mongo_client.py", line 1460, in _retry_internal
-    return func(session, conn, retryable)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\collection.py", line 609, in _insert_command
-    _check_write_command_response(result)
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\helpers.py", line 259, in _check_write_command_response
-    _raise_last_write_error(write_errors)
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\helpers.py", line 231, in _raise_last_write_error
-    raise DuplicateKeyError(error.get("errmsg"), 11000, error)
-pymongo.errors.DuplicateKeyError: E11000 duplicate key error collection: db.users index: username_1 dup key: { username: "jose" }, full error: {'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: db.users index: username_1 dup key: { username: "jose" }', 'keyPattern': {'username': 1}, 'keyValue': {'username': 'jose'}}
-2023-09-12 14:18:11,264 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]
-2023-09-12 14:19:32,007 ERROR: Exception on /follow/rodri [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask\app.py", line 1482, in full_dispatch_request
+    rv = self.preprocess_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask\app.py", line 1974, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\main\routes.py", line 19, in before_request
+    if current_user.is_authenticated:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\werkzeug\local.py", line 311, in __get__
+    obj = instance._get_current_object()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\werkzeug\local.py", line 515, in _get_current_object
+    return get_name(local())
+                    ^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask_login\utils.py", line 25, in <lambda>
+    current_user = LocalProxy(lambda: _get_user())
+                                      ^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask_login\utils.py", line 372, in _get_user
+    current_app.login_manager._load_user()
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask_login\login_manager.py", line 364, in _load_user
+    user = self._user_callback(user_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\models.py", line 147, in load_user
+    from app import mongo
+ImportError: cannot import name 'mongo' from 'app' (C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py)
+2023-09-19 16:05:49,036 ERROR: Exception on /index [GET] [in C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask\app.py:1414]
+Traceback (most recent call last):
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask\app.py", line 1482, in full_dispatch_request
+    rv = self.preprocess_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask\app.py", line 1974, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\main\routes.py", line 19, in before_request
+    if current_user.is_authenticated:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\werkzeug\local.py", line 311, in __get__
+    obj = instance._get_current_object()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\werkzeug\local.py", line 515, in _get_current_object
+    return get_name(local())
+                    ^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask_login\utils.py", line 25, in <lambda>
+    current_user = LocalProxy(lambda: _get_user())
+                                      ^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask_login\utils.py", line 372, in _get_user
+    current_app.login_manager._load_user()
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask_login\login_manager.py", line 364, in _load_user
+    user = self._user_callback(user_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\models.py", line 147, in load_user
+    from app import mongo
+ImportError: cannot import name 'mongo' from 'app' (C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py)
+2023-09-19 16:05:52,866 ERROR: Exception on /index [GET] [in C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask\app.py:1414]
+Traceback (most recent call last):
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask\app.py", line 1482, in full_dispatch_request
+    rv = self.preprocess_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask\app.py", line 1974, in preprocess_request
+    rv = self.ensure_sync(before_func)()
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\main\routes.py", line 19, in before_request
+    if current_user.is_authenticated:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\werkzeug\local.py", line 311, in __get__
+    obj = instance._get_current_object()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\werkzeug\local.py", line 515, in _get_current_object
+    return get_name(local())
+                    ^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask_login\utils.py", line 25, in <lambda>
+    current_user = LocalProxy(lambda: _get_user())
+                                      ^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask_login\utils.py", line 372, in _get_user
+    current_app.login_manager._load_user()
+  File "C:\Users\YiyoZapata\miniconda3\Lib\site-packages\flask_login\login_manager.py", line 364, in _load_user
+    user = self._user_callback(user_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\models.py", line 147, in load_user
+    from app import mongo
+ImportError: cannot import name 'mongo' from 'app' (C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py)
+2023-09-21 14:22:57,428 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:80]
+2023-09-21 14:27:53,362 ERROR: Exception on /unfollow/susan [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
 Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
     response = self.full_dispatch_request()
@@ -58,37 +118,11 @@ Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py", line 265, in follow
-    current_user.save()  # Guardar los cambios en el usuario actual
-    ^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\models.py", line 33, in save
-    self.id = users_collection.insert_one(self.__dict__).inserted_id
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\collection.py", line 671, in insert_one
-    self._insert_one(
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\collection.py", line 611, in _insert_one
-    self.__database.client._retryable_write(acknowledged, _insert_command, session)
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\mongo_client.py", line 1568, in _retryable_write
-    return self._retry_with_session(retryable, func, s, None)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\mongo_client.py", line 1413, in _retry_with_session
-    return self._retry_internal(retryable, func, session, bulk)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\_csot.py", line 108, in csot_wrapper
-    return func(self, *args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\mongo_client.py", line 1460, in _retry_internal
-    return func(session, conn, retryable)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\collection.py", line 609, in _insert_command
-    _check_write_command_response(result)
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\helpers.py", line 259, in _check_write_command_response
-    _raise_last_write_error(write_errors)
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\pymongo\helpers.py", line 231, in _raise_last_write_error
-    raise DuplicateKeyError(error.get("errmsg"), 11000, error)
-pymongo.errors.DuplicateKeyError: E11000 duplicate key error collection: db.users index: _id_ dup key: { _id: "65005736ae60959e4b24b320" }, full error: {'index': 0, 'code': 11000, 'errmsg': 'E11000 duplicate key error collection: db.users index: _id_ dup key: { _id: "65005736ae60959e4b24b320" }', 'keyPattern': {'_id': 1}, 'keyValue': {'_id': '65005736ae60959e4b24b320'}}
-2023-09-12 14:22:00,904 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]
-2023-09-12 14:22:21,842 ERROR: Exception on /follow/susan [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\main\routes.py", line 255, in unfollow
+    user_to_unfollow.followers.remove(current_user._id)  # Elimina el seguidor del usuario que está siendo dejado de seguir
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: list.remove(x): x not in list
+2023-09-21 14:28:57,717 ERROR: Exception on /unfollow/susan [POST] [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py:1414]
 Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
     response = self.full_dispatch_request()
@@ -105,13 +139,7 @@ Traceback (most recent call last):
   File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\venv\Lib\site-packages\flask_login\utils.py", line 290, in decorated_view
     return current_app.ensure_sync(func)(*args, **kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\routes.py", line 265, in follow
-    current_user.save()  # Guardar los cambios en el usuario actual
-    ^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\models.py", line 34, in save
-    print("Usuario guardado con ID:", self.id)
-                                      ^^^^^^^
-AttributeError: 'User' object has no attribute 'id'
-2023-09-12 14:22:45,828 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]
-2023-09-14 10:32:33,060 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]
-2023-09-18 08:23:15,589 INFO: Microblog startup [in C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\__init__.py:49]
+  File "C:\Users\YiyoZapata\Desktop\mongo_flask\microblog\app\main\routes.py", line 255, in unfollow
+    user_to_unfollow.followers.remove(current_user._id)  # Elimina el seguidor del usuario que está siendo dejado de seguir
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: list.remove(x): x not in list

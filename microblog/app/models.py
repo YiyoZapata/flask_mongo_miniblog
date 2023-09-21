@@ -1,7 +1,6 @@
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-from app import mongo, app
-from app import login 
+from microblog.app import  login
 from flask_login import UserMixin
 import json
 from bson import ObjectId
@@ -10,9 +9,10 @@ from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt 
 from time import time
+from flask import current_app
 
 
-posts_collection = mongo.db.posts
+
 
 class User(UserMixin):
     def __init__(self,user_data):
@@ -28,35 +28,31 @@ class User(UserMixin):
     def get_id(self):
         return self._id
   
-
     def save(self):
+        from microblog.microblog import mongo
         users_collection = mongo.db.users
         if not self.password_hash:
             raise ValueError("La contraseña debe ser establecida antes de guardar el usuario.")
         self.id = users_collection.insert_one(self.__dict__).inserted_id
         print("Usuario guardado con ID:", self.id)
 
-       
     
     def update(self, update_values):
-        users_collection = mongo.db.users
-        
+        from microblog.microblog import mongo
+        users_collection = mongo.db.users        
         result = users_collection.update_one({"_id": self._id},{'$set': update_values})
         print("Update Result:", result.modified_count)
     
     def update_opt(self):
+        from microblog.microblog import mongo
         users_collection = mongo.db.users
         
         result = users_collection.update_one({"_id": self._id},{'$set': self.__dict__})
         print("Update Result:", result.modified_count)
         
-    
     def is_following(self, user_id):
             return str(user_id) in self.following 
     
-
-
-
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -65,6 +61,7 @@ class User(UserMixin):
 
     @staticmethod
     def find_by_username(username):
+        from microblog.microblog import mongo
         users_collection = mongo.db.users
         user_data = users_collection.find_one({'username': username})
         if user_data:
@@ -73,6 +70,7 @@ class User(UserMixin):
 
     @staticmethod
     def find_by_email(email):
+        from microblog.microblog import mongo
         users_collection = mongo.db.users
         user_data = users_collection.find_one({'email': email})
         if user_data:
@@ -89,13 +87,16 @@ class User(UserMixin):
             self.following.append(user_to_follow._id)
             self.update({"following": self.following})  # Actualiza el campo 'following' del usuario actual
 
+
     def unfollow(self, user_to_unfollow):
         if user_to_unfollow._id != self._id and user_to_unfollow._id in self.following:
             self.following.remove(user_to_unfollow._id)
-            self.update({"following": self.following})  # Actualiza el campo 'following' del usuario actual
-             
+            self.update({"following": self.following})
 
+             
     def followed_posts(self):
+        from microblog.microblog import mongo
+        posts_collection = mongo.db.posts
         # Obtener la lista de IDs de usuarios seguidos
         followed_ids = self.following
         
@@ -113,14 +114,15 @@ class User(UserMixin):
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode(
             {'reset_password': str(self._id), 'exp': time() + expires_in},
-            app.config['SECRET_KEY'], algorithm='HS256')
+            current_app.config['SECRET_KEY'], algorithm='HS256')
 
 
 
     @staticmethod
     def verify_reset_password_token(token):
+        from microblog.microblog import mongo
         try:
-            payload = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+            payload = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
             user_id = payload.get('reset_password')
             if user_id:
                 user_data = mongo.db.users.find_one({'_id': ObjectId(user_id)})
@@ -136,6 +138,7 @@ class User(UserMixin):
 @login.user_loader
 def load_user(user_id):
     # Debes buscar el usuario por su ID en la colección de usuarios en MongoDB
+    from microblog.microblog import mongo
     user_data = mongo.db.users.find_one({'_id': user_id})
     if user_data:
         return User(user_data)
@@ -148,6 +151,7 @@ class Post:
         self.user_id = user_id
 
     def save(self):
+        from microblog.microblog import mongo
         posts_collection = mongo.db.posts
         post_data = {
             "body": self.body,
@@ -159,6 +163,7 @@ class Post:
 
     @staticmethod
     def find_all_with_user_info():
+        from microblog.microblog import mongo
         posts_collection = mongo.db.posts
         users_collection = mongo.db.users
         
@@ -183,5 +188,6 @@ class Post:
 
     @staticmethod
     def find_by_user_id(user_id):
+        from microblog.microblog import mongo
         posts_collection = mongo.db.posts
         return posts_collection.find({'user_id': user_id})

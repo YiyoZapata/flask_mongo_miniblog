@@ -1,7 +1,6 @@
-from app import app, cli
-from app.models import User, Post
+from microblog.app import create_app, cli
 
 
-@app.shell_context_processor
-def make_shell_context():
-    return { 'User': User, 'Post': Post}
+app,mongo = create_app()
+
+
