@@ -14,6 +14,7 @@ from flask import current_app
 
 
 
+
 class User(UserMixin):
     def __init__(self,user_data):
         self._id = str(user_data['_id'])
@@ -24,6 +25,7 @@ class User(UserMixin):
         self.last_seen = user_data.get('last_seen')
         self.followers = user_data.get("followers", [])
         self.following = user_data.get("following", []) 
+        self.avatar_url = user_data.get('avatar_url',self.avatar(36))
 
     def get_id(self):
         return self._id
