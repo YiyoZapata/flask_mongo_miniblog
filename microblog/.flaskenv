@@ -1,1 +1,1 @@
-FLASK_APP=/flask_mongo_miniblog/microblog/microblog
+FLASK_APP=microblog:microblog
