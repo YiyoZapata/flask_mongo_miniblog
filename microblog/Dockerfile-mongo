@@ -1,0 +1,14 @@
+# Utiliza la imagen oficial de MongoDB como base
+FROM mongo:latest
+
+# Información sobre el mantenedor
+LABEL maintainer="tu_nombre@tucorreo.com"
+
+# Exponer el puerto 27017 para las conexiones de MongoDB
+EXPOSE 27017
+
+# Directorio de trabajo por defecto
+WORKDIR /data/db
+
+# Comando por defecto para iniciar MongoDB
+CMD ["mongod"]
